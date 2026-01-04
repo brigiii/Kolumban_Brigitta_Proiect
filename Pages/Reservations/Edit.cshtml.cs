@@ -42,7 +42,8 @@ namespace Kolumban_Brigitta_Proiect.Pages.Reservations
             }
 
             ViewData["RoomId"] = new SelectList(
-                _context.Room.Include(r => r.Hotel),
+                _context.Room.Include(r => r.Hotel)
+                .Where(r => r.Availability),
                 "Id",
                 "RoomNumber",
                 Reservation.RoomId
@@ -60,12 +61,44 @@ namespace Kolumban_Brigitta_Proiect.Pages.Reservations
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more information, see https://aka.ms/RazorPagesCRUD.
+
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
+
+           
+            if (Reservation.CheckOutDate <= Reservation.CheckInDate)
+            {
+                ModelState.AddModelError("",
+                    "Check-out date must be after check-in date.");
+                return Page();
+            }
+
+            
+            var room = await _context.Room
+                .FirstOrDefaultAsync(r => r.Id == Reservation.RoomId);
+
+            if (room == null)
+            {
+                ModelState.AddModelError("", "Selected room not found.");
+                return Page();
+            }
+
+           
+            int numberOfNights =
+                (Reservation.CheckOutDate.Date - Reservation.CheckInDate.Date).Days;
+
+            if (numberOfNights <= 0)
+            {
+                ModelState.AddModelError("", "Invalid reservation period.");
+                return Page();
+            }
+
+            
+            Reservation.TotalPrice = numberOfNights * room.PricePerNight;
 
             _context.Attach(Reservation).State = EntityState.Modified;
 
@@ -87,6 +120,7 @@ namespace Kolumban_Brigitta_Proiect.Pages.Reservations
 
             return RedirectToPage("./Index");
         }
+
 
         private bool ReservationExists(int id)
         {

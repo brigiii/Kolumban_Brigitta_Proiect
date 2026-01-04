@@ -19,13 +19,28 @@ namespace Kolumban_Brigitta_Proiect.Pages.Reservations
             _context = context;
         }
 
+        [BindProperty(SupportsGet = true)]
+        public string? SearchGuest { get; set; }
+
         public IList<Reservation> Reservation { get;set; } = default!;
 
         public async Task OnGetAsync()
         {
-            Reservation = await _context.Reservation
-                .Include(r => r.Guest)
-                .Include(r => r.Room).ToListAsync();
+            IQueryable<Reservation> reservationsQuery = _context.Reservation
+                .Include(r => r.Room)
+                    .ThenInclude(r => r.Hotel)
+                .Include(r => r.Guest);
+
+            if (!string.IsNullOrEmpty(SearchGuest))
+            {
+                reservationsQuery = reservationsQuery.Where(r =>
+                    r.Guest.Name.Contains(SearchGuest));
+            }
+
+            Reservation = await reservationsQuery
+                .OrderBy(r => r.CheckInDate)
+                .ToListAsync();
         }
+
     }
 }

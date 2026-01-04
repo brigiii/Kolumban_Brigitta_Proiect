@@ -21,5 +21,8 @@ namespace Kolumban_Brigitta_Proiect.Models
         [Display(Name = "Guest")]
         public int GuestId { get; set; }
         public Guest? Guest { get; set; }
+
+        [Display(Name = "Total Price")]
+        public decimal TotalPrice { get; set; }
     }
 }

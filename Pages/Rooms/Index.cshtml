@@ -5,7 +5,39 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Rooms</h1>
+<form method="get" class="mb-3">
+    <div class="row">
+        <div class="col-md-3">
+            <select asp-for="HotelId"
+                    asp-items="Model.Hotels"
+                    class="form-control">
+                <option value="">-- All Hotels --</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <input type="date"
+                   asp-for="FromDate"
+                   class="form-control"
+                   placeholder="Check-in" />
+        </div>
+
+        <div class="col-md-3">
+            <input type="date"
+                   asp-for="ToDate"
+                   class="form-control"
+                   placeholder="Check-out" />
+        </div>
+
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary">
+                Search
+            </button>
+        </div>
+    </div>
+</form>
+
 
 <p>
     <a asp-page="Create">Create New</a>
@@ -46,9 +78,29 @@
             <td>
                 @Html.DisplayFor(modelItem => item.PricePerNight)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Availability)
-            </td>
+             <td>
+                    @{
+                        var today = DateTime.Today;
+                        var isBookedToday = item.Reservations != null && item.Reservations.Any(r =>
+                        r.CheckInDate.Date <= today &&
+                        r.CheckOutDate.Date > today
+                        );
+                    }
+
+                    @if (!item.Availability)
+                    {
+                        <span class="badge bg-danger">Unavailable</span>
+                    }
+                    else if (isBookedToday)
+                    {
+                        <span class="badge bg-warning text-dark">Booked today</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success">Available</span>
+                    }
+             </td>
+
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |

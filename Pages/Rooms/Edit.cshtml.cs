@@ -36,7 +36,7 @@ namespace Kolumban_Brigitta_Proiect.Pages.Rooms
                 return NotFound();
             }
             Room = room;
-           ViewData["HotelId"] = new SelectList(_context.Hotel, "ID", "ID");
+           ViewData["HotelId"] = new SelectList(_context.Hotel, "ID", "Name");
             return Page();
         }
 

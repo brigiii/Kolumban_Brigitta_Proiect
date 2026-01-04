@@ -23,7 +23,9 @@ namespace Kolumban_Brigitta_Proiect.Pages.Hotels
 
         public async Task OnGetAsync()
         {
-            Hotel = await _context.Hotel.ToListAsync();
+            Hotel = await _context.Hotel
+                .OrderBy(h => h.Name)
+                .ToListAsync();
         }
     }
 }

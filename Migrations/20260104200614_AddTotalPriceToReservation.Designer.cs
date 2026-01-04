@@ -4,6 +4,7 @@ using Kolumban_Brigitta_Proiect.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kolumban_Brigitta_Proiect.Migrations
 {
     [DbContext(typeof(Kolumban_Brigitta_ProiectContext))]
-    partial class Kolumban_Brigitta_ProiectContextModelSnapshot : ModelSnapshot
+    [Migration("20260104200614_AddTotalPriceToReservation")]
+    partial class AddTotalPriceToReservation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -28,7 +28,10 @@ namespace Kolumban_Brigitta_Proiect.Pages.Rooms
                 return NotFound();
             }
 
-            var room = await _context.Room.FirstOrDefaultAsync(m => m.Id == id);
+            var room = await _context.Room
+                .Include(r => r.Hotel)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
             if (room == null)
             {
                 return NotFound();

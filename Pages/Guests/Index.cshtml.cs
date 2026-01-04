@@ -23,7 +23,9 @@ namespace Kolumban_Brigitta_Proiect.Pages.Guests
 
         public async Task OnGetAsync()
         {
-            Guest = await _context.Guest.ToListAsync();
+            Guest = await _context.Guest
+                .OrderBy(g => g.Name)
+                .ToListAsync();
         }
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Kolumban_Brigitta_Proiect.Data;
 using Kolumban_Brigitta_Proiect.Models;
 
+
 namespace Kolumban_Brigitta_Proiect.Pages.Hotels
 {
     public class DeleteModel : PageModel
@@ -41,7 +42,6 @@ namespace Kolumban_Brigitta_Proiect.Pages.Hotels
             }
             return Page();
         }
-
         public async Task<IActionResult> OnPostAsync(int? id)
         {
             if (id == null)
@@ -50,6 +50,7 @@ namespace Kolumban_Brigitta_Proiect.Pages.Hotels
             }
 
             var hotel = await _context.Hotel.FindAsync(id);
+
             if (hotel != null)
             {
                 Hotel = hotel;
@@ -59,5 +60,6 @@ namespace Kolumban_Brigitta_Proiect.Pages.Hotels
 
             return RedirectToPage("./Index");
         }
+
     }
 }
